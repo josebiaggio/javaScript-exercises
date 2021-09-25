@@ -23,11 +23,8 @@ const customers = [
 ]
 
 const calculatePercentageOfHappyCustomers = customers => {
-    const onlyHappyCustomers = customer => {
-        if(customer.nps > 7) {
-            return customer
-        }
-    }
+    // Callback
+    const onlyHappyCustomers = ({nps}) => nps > 7
 
     const happyCustomers = customers.filter(onlyHappyCustomers)
     

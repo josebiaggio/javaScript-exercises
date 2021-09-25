@@ -10,11 +10,8 @@ const students = [
 ]
 
 const checkForApprovedStudents = students => {
-    const onlyApprovedStudents = student => {
-        if(student.score >= 5) {
-            return student
-        }
-    }
+    // Callback
+    const onlyApprovedStudents = ({score}) => score >= 5
 
     const approvedStudents = students.filter(onlyApprovedStudents)
     return approvedStudents
