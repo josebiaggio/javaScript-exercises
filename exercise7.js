@@ -140,14 +140,15 @@ const getInfosPerState = data => {
     // Callback function
     const editObject = ({ state, totalStudents, averageAge }) => {
         return {
-            state,
-            totalStudents: totalStudents,
-            averageAge: averageAge
+            [state]: {
+                totalStudents,
+                averageAge
+            }
         }
     }
 
     const infosPerState = states.map(editObject)
-    return infosPerState
+    return [{...infosPerState}]
 }
 
 const main = data => {
