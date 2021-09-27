@@ -96,49 +96,44 @@ const createAnObjectForEachState = state => {
         state,
         totalStudents: null,
         sumOfAges: null,
-        averageAge: null
+        averageAge: null,
     }
 }
 
-const countTotalOfStudents = data => {
-    const totalOfStudents = data.students.length
+const countTotalOfStudents = students => {
+    const totalOfStudents = students.length
     return totalOfStudents
 }
 
-const countOfDifferentStates = data => {
-    const countOfDifferentStates = data.students
+const getStatesWithoutRepeating = students => {
+    const states = students
         .filter(onlyStudentsWithCompleteData)
         .map(getState)
         .sort()
         .filter(statesWithoutRepeating)
 
-    return countOfDifferentStates.length
+    return states
 }
 
-const getInfosPerState = data => {
-    const states = data.students
-        .filter(onlyStudentsWithCompleteData)
-        .map(getState)
-        .sort()
-        .filter(statesWithoutRepeating)
-        .map(createAnObjectForEachState)
-
+const getInfosPerState = students => {
+    const states = getStatesWithoutRepeating(students).map(createAnObjectForEachState)
+        
     // Para cada estado do array "students" quando match com
     // o estado do array "states" é somado 1 estudante à chave
     // "totalStudents", a idade desse estudante é somada à
     // chave "sumOfAges" e a média das idades é feita.
-    data.students.forEach(student => {
-        for (let obj of states) {
-            if (student.state === obj.state) {
-                obj.totalStudents += 1
-                obj.sumOfAges += parseInt(student.age)
-                obj.averageAge = parseInt(obj.sumOfAges / obj.totalStudents)
+    students.forEach(student => {
+        for (let { state, totalStudents, sumOfAges, averageAge } of states) {
+            if (student['state'] === state) {
+                totalStudents += 1
+                sumOfAges += parseInt(student['age'])
+                averageAge = parseInt(sumOfAges / totalStudents)
             }
         }
     })
 
     // Callback function
-    const editObject = ({ state, totalStudents, averageAge }) => {
+    const updateObject = ({ state, totalStudents, averageAge }) => {
         return {
             [state]: {
                 totalStudents,
@@ -147,14 +142,14 @@ const getInfosPerState = data => {
         }
     }
 
-    const infosPerState = states.map(editObject)
+    const infosPerState = states.map(updateObject)
     return [{...infosPerState}]
 }
 
-const main = data => {
-    const total = countTotalOfStudents(data)
-    const stateCount = countOfDifferentStates(data)
-    const infosPerState = getInfosPerState(data)
+const main = ({ students }) => {
+    const total = countTotalOfStudents(students)
+    const stateCount = getStatesWithoutRepeating(students).length
+    const infosPerState = getInfosPerState(students)
 
     return {
         total,
