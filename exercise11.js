@@ -52,8 +52,8 @@ const todos = [
 const calculateTheNumberOfAllCompletedTodo = todos => {
     return todos.reduce((acc, value) => {
         const { completed } = value
-        if(completed) acc += 1
-        return acc
+        if(!completed) return acc
+        return acc += 1
     }, 0)
 }
 

@@ -75,48 +75,29 @@ const data =
     ]
 }
 
-// Callback function
-const onlyStudentsWithCompleteData = ({ state }) => state
-
-// Callback function
-const getState = ({ state }) => state
-
-// Callback function
-const statesWithoutRepeating = (state, index, states) => {
-    if (!index) {
-        return state
-    } else if (state !== states[index - 1]) {
-        return state
-    }
-}
-
-// Callback function
-const createAnObjectForEachState = state => {
-    return {
-        state,
-        totalStudents: null,
-        sumOfAges: null,
-        averageAge: null,
-    }
-}
-
 const countTotalOfStudents = students => {
     const totalOfStudents = students.length
     return totalOfStudents
 }
 
 const getStatesWithoutRepeating = students => {
-    const states = students
-        .filter(onlyStudentsWithCompleteData)
-        .map(getState)
-        .sort()
-        .filter(statesWithoutRepeating)
+    const onlyStudentsWithCompleteData = students.filter(({ state }) => state)
+    const states = onlyStudentsWithCompleteData.map(({ state }) => state)
+    const statesInAlphabeticalOrder = states.sort()
+    const statesWithoutRepeating = [...new Set(statesInAlphabeticalOrder)]
 
-    return states
+    return statesWithoutRepeating
 }
 
 const getInfosPerState = students => {
-    const states = getStatesWithoutRepeating(students).map(createAnObjectForEachState)
+    const states = getStatesWithoutRepeating(students).map(state => {
+        return {
+            state,
+            totalStudents: null,
+            sumOfAges: null,
+            averageAge: null,
+        }
+    })
         
     // Para cada estado do array "students" quando match com
     // o estado do array "states" é somado 1 estudante à chave
@@ -132,17 +113,15 @@ const getInfosPerState = students => {
         }
     })
 
-    // Callback function
-    const updateObject = ({ state, totalStudents, averageAge }) => {
+    const infosPerState = states.map(({ state, totalStudents, averageAge }) => {
         return {
             [state]: {
                 totalStudents,
                 averageAge
             }
         }
-    }
+    })
 
-    const infosPerState = states.map(updateObject)
     return infosPerState
 }
 
