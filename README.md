@@ -1,2 +1,2 @@
-# web-full-stack-js-exercises
-Santander Coders 2021 - Exercícios JavaScript do módulo 2 do curso Web Full Stack
+# js-exercises-santander-coders-2021
+JavaScript exercises from module 2 of the Web Full Stack course
